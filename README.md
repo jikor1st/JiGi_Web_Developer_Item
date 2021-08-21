@@ -1,2 +1,1 @@
-# Math
-javascript math
+# Javascript Math 함수
