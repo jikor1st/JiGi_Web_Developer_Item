@@ -1,4 +1,4 @@
-## Javascript Math 함수
+## Javascript
 
 
 ### Math.abs()
@@ -11,6 +11,7 @@ Math.abs(-3);
 ```
 
 ### 두 날짜의 일, 시간, 분 차이계산
+두 날짜의 차이를 계산해줍니다.
 ```javascript
 const date1 = new Date();
 const date2 = new Date();
