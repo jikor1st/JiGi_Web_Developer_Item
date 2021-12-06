@@ -57,3 +57,30 @@ const dateCalc = (dateGet, value, index)=>{
     }
   }
 ```
+
+### input의 커서 위치 제어
+input type의 타이핑을 칠 수 있는 박스의 커서 위치를 제어합니다.
+여기서 unit.length는 prefix로 붙여줄 텍스트의 길이를 의미합니다.
+리엑트 hook 기준으로 작성하였습니다.
+```javascript
+const inputRef = useRef();
+    useEffect(()=>{
+        if(inputRef.current !== undefined){
+            if(!onlyInput){
+                let current = inputRef.current;
+                let valueLength = current.value.length - unit.length;
+                if(current.setSelectionRange){
+                    current.focus();
+                    current.setSelectionRange(valueLength, valueLength);
+                }else if(current.createTextRange){
+                    // IE8 and below 대비
+                    let range = current.createTextRange();
+                    range.collapse(true);
+                    range.moveEnd('chracter', valueLength);
+                    range.moveStart('chracter', valueLength);
+                    range.select();
+                }
+            }
+        }
+    },[value?.state, inputRef]);
+```
