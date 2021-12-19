@@ -84,3 +84,17 @@ const inputRef = useRef();
         }
     },[value?.state, inputRef]);
 ```
+
+### 날짜와 알파벳을 활용한 난수 생성
+현재의 날짜 + 알파벳 랜덤(사용자 설정갯수)을 합쳐 난수를 생성합니다.
+함수의 parameter값 lengthCha의 갯수에 따라 랜덤으로 나오는 알파벳의 갯수가 다릅니다.
+```javascript
+const createPayOid = (lengthCha)=> { // 난수 생성
+        const ranPlusNum = lengthCha, cha = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+        let chaResult = "";
+        const dateGet = new Date(), year = dateGet.getFullYear(), month = dateGet.getMonth() + 1, day = dateGet.getDate(), hours = dateGet.getHours(), minutes = dateGet.getMinutes(), seconds = dateGet.getSeconds();
+        const dateReulst = year + "" + (month < 10 && ("0"+month) || month) + "" + (day < 10 && ("0"+day) || day) + "" + (hours < 10 && ("0"+hours) || hours) + (minutes < 10 && ("0"+minutes) || minutes) + (seconds < 10 && ("0"+seconds) || seconds);
+        Array(ranPlusNum).fill().map(()=>{ chaResult += cha[Math.floor(Math.random() * cha.length-1) + 1]; });
+        return dateReulst+chaResult;
+    }
+```
