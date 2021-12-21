@@ -98,3 +98,33 @@ const createPayOid = (lengthCha)=> { // 난수 생성
         return dateReulst+chaResult;
     }
 ```
+
+### 리엑트 jsx 컴포넌트 텍스트 반환
+리엑트 컴포넌트로 만들어져있는 Array에 해당 텍스트가 있는지 판별해줍니다.
+\n이 들어가있는것을 지워주기위해 replace,정규표현식이 사용되었고 
+핵심은 map함수와 findIndex 함수입니다.
+
+```javascript
+const HandWorkDegree = [<span>리스트 1</span>,<span>리스트 2<PcBr/>(설명 텍스트)</span>,<span>리스트 3</span>]
+let stringList = [];
+HandWorkDegree.map((item)=>{ 
+    let string = ""; 
+    if(item.props.children.length > 0 && typeof item.props.children === "object"){
+        item.props.children.map((item, index, arr)=>{
+            if(typeof item === "string"){
+                if(index !== arr.length - 1){
+                    string += item + " ";
+                }else{
+                    string += item;
+                }
+            }
+        })
+    }else{
+        string = item.props.children;
+    }
+    stringList.push(string);
+    string = "";
+});
+setSelectHandWork(stringList.findIndex((item)=>handWork.replace(/(\r\n|\n|\r)/gm, " ") === item));
+
+```
