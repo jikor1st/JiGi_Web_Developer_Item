@@ -58,6 +58,66 @@ const dateCalc = (dateGet, value, index)=>{
   }
 ```
 
+### 날짜 형식 반환 (업데이트중)
+날짜형식으로 된 데이터를 값으로 넘기면 자동으로 파라미터값에 따라서 반환해줍니다.
+형식 : 2021.12.10 10:25:30 , 21년 12월 10일 10:25:30
+
+```javascript
+/*
+@params
+date : 날짜형식으로 된 날짜 (date)
+slice : 21.10.11 에서 . 나누는곳에 추가할 글자 (string)
+prefix : 년, 월, 일의 prefix를 추가할지 (boolean)
+view : year,month,day,hours,minutes,seconds 각 글자를 , 와 함께 추가하면 반환해준다 (string)
+yearHalf : 2021 데이터를 21만 반환하고 싶을때 true 아니면 false를 입력한다 (boolean)
+*/
+export const dateReturn = (date, slice, prefix, view, yearHalf)=>{
+    let getDate = new Date(date);
+
+    let getYear = getDate.getFullYear();
+    let getMonth = getDate.getMonth();
+    let getDay = getDate.getDate();
+    let getHours = getDate.getHours();
+    let getMinutes = getDate.getMinutes();
+    let getSeconds = getDate.getSeconds();
+
+    function viewCheck(type){
+        let getView = view?.split(","), isView = false;
+        if(getView?.length > 0){
+            for(let i = 0; i < getView.length; i++){
+                if(getView[i] === type){ isView = true; break; }else{ isView = false; }
+            }
+        }else{ isView = true; }
+        return isView;
+    }
+    let yearResult = viewCheck("year") && `${yearHalf && (getYear.toString()[getYear.toString().length-2]+""+getYear.toString()[getYear.toString().length-1]) || getYear}${prefix && "년" || ""}` || '';
+    let monthResult = viewCheck("month") && `${getMonth >= 10 && getMonth || "0"+getMonth}${prefix && "월" || ""}` || '';
+    let dayResult = viewCheck("day") && `${getDay >= 10 && getDay || "0"+getDay}${prefix && "일" || ""}` || '';
+    let hoursResult = viewCheck("hours") && `${getHours >= 10 && getHours || "0"+getHours}${prefix && "시" || ""}` || '';
+    let minutesResult = viewCheck("minutes") && `${getMinutes >= 10 && getMinutes || "0"+getMinutes}${prefix && "분" || ""}` || '';
+    let secondsResult = viewCheck("seconds") && `${getSeconds >= 10 && getSeconds || "0"+getSeconds}${prefix && "초" || ""}` || '';
+
+    return `${yearResult}${yearResult !== "" && slice || ""}${monthResult}${monthResult !== "" && slice || ""}${dayResult} ${hoursResult}${minutesResult !== "" && ":" || ""}${minutesResult}${secondsResult !== "" && ":" || ""}${secondsResult}`;
+  }
+```
+### 받아온 날짜 계산 (위의 dateReturn과 함께 사용)
+형식 :  21년 2월 10일(오늘) 오전 01:25
+```javascript
+const dateCalc = (date)=>{
+    let result = "";
+    let cal = "";
+    let time = "";
+    if(date !== "" && date !== null && date !== undefined){
+        cal = dateReturn(date, ". ", false, "year,month,day", true);
+        const today = dateReturn(new Date(), ". ", false, "year,month,day", true);
+        time = dateReturn(date, "", false, "hours,minutes", true);
+        const timeCalc = parseInt(time.split(":")[0]) > 12 ? "오후 " + ( (parseInt(time.split(":")[0]) - 12 < 10 && "0"+parseInt(time.split(":")[0]) - 12 || parseInt(time.split(":")[0]) - 12) ) : parseInt(time.split(":")[0]) <= 12 && parseInt(time.split(":")[0]) !== 0 ? "오전 " + ( ( parseInt(time.split(":")[0]) < 10 && "0"+parseInt(time.split(":")[0]) || parseInt(time.split(":")[0]) ) ) : 12;
+        result = cal+"일"+(cal === today && "(오늘) " || " " )+timeCalc+" : "+parseInt(time.split(":")[1]) + " 출발";
+    }
+    return result;
+}
+```
+
 ### input의 커서 위치 제어
 input type의 타이핑을 칠 수 있는 박스의 커서 위치를 제어합니다.
 여기서 unit.length는 prefix로 붙여줄 텍스트의 길이를 의미합니다.
