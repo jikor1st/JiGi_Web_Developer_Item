@@ -188,3 +188,16 @@ HandWorkDegree.map((item)=>{
 setSelectHandWork(stringList.findIndex((item)=>handWork.replace(/(\r\n|\n|\r)/gm, " ") === item));
 
 ```
+
+### javascript 주소 parameter 받기
+주소창의 파라미터를 받아와야할때 사용합니다.
+
+```javascript
+function useParams(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+const getParams = useParams("params");
+```
