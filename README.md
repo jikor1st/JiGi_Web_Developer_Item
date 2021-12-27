@@ -10,7 +10,7 @@ Math.abs(-3);
 // return 3
 ```
 
-### 두 날짜의 일, 시간, 분 차이계산
+### 두 날짜의 일, 시간, 분 차이계산 ()
 두 날짜의 차이를 계산해줍니다.
 ```javascript
 const date1 = new Date();
@@ -200,4 +200,31 @@ function useParams(name) {
     return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 const getParams = useParams("params");
+```
+
+### localstorage 사용
+브라우저의 localstorage를 편하게 사용하기 위해 만들어진 함수입니다.
+
+```javascript
+// localstorage 지정
+function setLocalS(key, value){
+    localStorage.setItem(key, value);
+}
+// localstorage 가져오기 (useRemove true이면 가져오고 해당 값 지우기)
+function getLocalS(key, useRemove){
+    let result = "";
+    if(localStorage.getItem(key) !== null){
+        result = localStorage.getItem(key);
+        if(useRemove){
+            removeLocalS(key);
+        }
+        return result;
+    }else{
+        return false;
+    }
+}
+// localstorage 지우기
+function removeLocalS(key){
+    localStorage.removeItem(key);
+}
 ```
