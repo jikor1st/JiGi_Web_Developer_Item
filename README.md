@@ -228,3 +228,38 @@ function removeLocalS(key){
     localStorage.removeItem(key);
 }
 ```
+
+
+### 달력 생성 
+날짜 형식으로 된 string을 파라미터로 넘기면 달력 정보를 받아온다
+
+```javascript
+//@param : getDate -> 날짜 정보
+const calendarFunc = (getDate)=> {
+    const selectDate = new Date(getDate);
+    const selectYear = selectDate.getFullYear();
+    const selectMonth = selectDate.getMonth() + 1;
+    const selectDay = selectDate.getDate();
+    setSelect({year:selectYear, month:selectMonth, day:selectDay});
+    /* 선택된 지난달 */
+    const prevDate = new Date(selectYear, (selectMonth - 1), 0); // 지난달 마지막날
+    const prevLastWeek = prevDate.getDay() + 1; // 지난달 마지막 날 요일
+    /* 선택된 이번달 */
+    const thisDate = new Date(selectYear, selectMonth, 0); // 선택된달 마지막날
+    const thisDateLength = thisDate.getDate(); // 선택된달 총 길이
+
+    let dateArr = [];
+    const allDateLength = thisDateLength + prevLastWeek;
+    const prevProcess = prevLastWeek - 1; 
+    for(let i = 0; i < allDateLength; i++){
+        let dateObject = {};
+        if(i <= prevProcess){ // 이전달
+            dateObject = {type:"prev"};
+        }else{ // 선택된달
+            dateObject = {type:"this", year:selectYear, month:selectMonth, day:i - prevProcess};
+        }
+        dateArr.push(dateObject);
+    }
+    setDateInform(dateArr);
+}
+```
