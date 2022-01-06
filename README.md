@@ -198,7 +198,13 @@ const getParams = useParams("params");
 ```javascript
 // localstorage 지정
 function setLocalS(key, value){
-    localStorage.setItem(key, value);
+    let setValue = "";
+    if(typeof value === "string" || typeof value === "number"){
+        setValue = value.toString();
+    }else{
+        setValue = JSON.stringify(value);
+    }
+    localStorage.setItem(key, setValue);
 }
 // localstorage 가져오기 (useRemove true이면 가져오고 해당 값 지우기)
 function getLocalS(key, useRemove){
